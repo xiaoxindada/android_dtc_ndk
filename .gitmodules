@@ -1,0 +1,3 @@
+[submodule "jni/dtc"]
+	path = jni/dtc
+	url = https://android.googlesource.com/platform/external/dtc
