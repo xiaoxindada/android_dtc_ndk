@@ -9,13 +9,6 @@ setup_ndk() {
   mv android-ndk-* ndk
 }
 
-build() {
-  rm -rf obj libs
-  export NDK=${LOCALDIR}/ndk
-  export PATH=${NDK}:${PATH}
-  ndk-build
-}
-
 build_extensions_file() {
  rm -rf ext
  mkdir ext
@@ -40,7 +33,31 @@ build_extensions_file() {
  cd $LOCALDIR
 }
 
-[ "$1" = "setup" ] && setup_ndk
-build_extensions_file
-build && cd $LOCALDIR
+build_with_ndk() {
+  [ "$1" = "setup" ] && setup_ndk
+  rm -rf obj libs
+  export NDK=${LOCALDIR}/ndk
+  export PATH=${NDK}:${PATH}
+  build_extensions_file
+  ndk-build && cd $LOCALDIR
+}
 
+build_with_cmake() {
+  cp -f CMakeLists.txt jni/dtc
+  cmake jni/dtc
+  cmake --build jni/dtc --target install
+  rm -rf out
+  [ -d jni/dtc/install/bin/  ] && cp -rf jni/dtc/install/ out/
+}
+
+if echo $@ | grep "cmake" ;then
+  build_with_cmake
+fi
+
+if echo $@ | grep "ndk" ;then
+  if echo $@ | grep "setup" ;then
+    build_with_ndk "setup"
+  else
+    build_with_ndk
+  fi  
+fi
