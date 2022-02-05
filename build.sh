@@ -44,10 +44,12 @@ build_with_ndk() {
 
 build_with_cmake() {
   cp -f CMakeLists.txt jni/dtc
-  cmake jni/dtc
-  cmake --build jni/dtc --target install
+  cd jni/dtc
+  cmake .
+  cmake --build . --target install
   rm -rf out
-  [ -d jni/dtc/install/bin/  ] && cp -rf jni/dtc/install/ out/
+  [ -d install/bin/  ] && cp -rf install/ $LOCALDIR/out/
+  cd $LOCALDIR
 }
 
 if echo $@ | grep "cmake" ;then
