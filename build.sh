@@ -44,11 +44,9 @@ build_with_ndk() {
 
 build_with_cmake() {
   cp -f CMakeLists.txt jni/dtc
-  cd jni/dtc
-  cmake .
-  cmake --build . --target install
-  rm -rf out
-  [ -d install/bin/  ] && cp -rf install/ $LOCALDIR/out/
+  rm -rf build out
+  cmake -S jni/dtc -B build -DCMAKE_INSTALL_PREFIX=out
+  cmake --build build -j$(nproc --all) --target install
   cd $LOCALDIR
 }
 

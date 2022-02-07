@@ -13,12 +13,6 @@ add_compile_options(
 )
 
 # build_extensions_files
-set(cmake_caches 
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake_install.cmake
-    ${CMAKE_CURRENT_SOURCE_DIR}/CMakeFiles
-    ${CMAKE_CURRENT_SOURCE_DIR}/CMakeCache.txt
-)
-execute_process(COMMAND rm -rf ${cmake_caches})
 execute_process(COMMAND flex -o ${CMAKE_CURRENT_SOURCE_DIR}/dtc-lexer.lex.c ${CMAKE_CURRENT_SOURCE_DIR}/dtc-lexer.l)
 execute_process(COMMAND bison -b ${CMAKE_CURRENT_SOURCE_DIR}/dtc-parser -d ${CMAKE_CURRENT_SOURCE_DIR}/dtc-parser.y)
 execute_process(COMMAND cp -f ${CMAKE_CURRENT_SOURCE_DIR}/dtc-parser.tab.h ${CMAKE_CURRENT_SOURCE_DIR}/dtc-parser.h)
@@ -62,7 +56,6 @@ add_executable(dtc_static ${SRCS})
 target_link_libraries(dtc_static fdt)
 
 # install
-set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/install)
 install(
     TARGETS dtc_static
     LIBRARY DESTINATION lib  # 动态库安装路径

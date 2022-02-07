@@ -2,5 +2,6 @@
 /obj
 /ndk
 /ext
+/build
 /out
 *zip
