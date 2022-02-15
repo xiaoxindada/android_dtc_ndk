@@ -1,0 +1,68 @@
+cmake_minimum_required(VERSION 3.0)
+project(mkdtimg)
+message(${CMAKE_CURRENT_SOURCE_DIR})
+
+add_compile_options(
+    -Wall
+    -O2 
+    -flto
+    -Wno-sign-compare
+    -Wno-missing-field-initializers
+    -Wno-unused-parameter
+    -DNO_YAML
+)
+
+# add missing header files
+execute_process(COMMAND cp -f ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/sysdeps/include/libufdt_sysdeps.h ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/libufdt_sysdeps.h)
+
+# include_dirs
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/sysdeps/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/utils/src
+)
+
+# libfdt.a
+set(FDT_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/fdt.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/fdt_check.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/fdt_ro.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/fdt_wip.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/fdt_sw.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/fdt_rw.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/fdt_strerror.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/fdt_empty_tree.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/fdt_addresses.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/fdt_overlay.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt/acpi.c
+)
+add_library(fdt STATIC ${FDT_SRCS})
+
+# libufdt_sysdeps.a
+set(UFDT_SYSDEPS_SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/sysdeps/libufdt_sysdeps_posix.c
+)
+add_library(ufdt_sysdeps STATIC ${UFDT_SYSDEPS_SRCS})
+
+# executable
+set(SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/utils/src/mkdtimg.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/utils/src/mkdtimg_cfg_create.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/utils/src/mkdtimg_core.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/utils/src/mkdtimg_create.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/utils/src/mkdtimg_dump.c 
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/utils/src/dt_table.c
+)
+add_executable(mkdtimg_static ${SRCS})
+target_link_libraries(mkdtimg_static fdt ufdt_sysdeps -static)
+
+# install
+install(
+    TARGETS mkdtimg_static
+    LIBRARY DESTINATION lib  # 动态库安装路径
+    ARCHIVE DESTINATION lib  # 静态库安装路径
+    RUNTIME DESTINATION bin  # 可执行文件安装路径
+    PUBLIC_HEADER DESTINATION include  # 头文件安装路径
+)

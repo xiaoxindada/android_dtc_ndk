@@ -3,5 +3,7 @@
 /ndk
 /ext
 /build
+/dtc
+/mkdtimg
 /out
 *zip

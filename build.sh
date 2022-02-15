@@ -43,10 +43,13 @@ build_with_ndk() {
 }
 
 build_with_cmake() {
-  cp -f CMakeLists.txt jni/dtc
-  rm -rf build out
-  cmake -S jni/dtc -B build -DCMAKE_INSTALL_PREFIX=out
-  cmake --build build -j$(nproc --all) --target install
+  cp -f CMakeLists_dtc.txt jni/dtc/CMakeLists.txt
+  cp -f CMakeLists_mkdtimg.txt jni/libufdt/CMakeLists.txt
+  rm -rf build dtc mkdtimg out
+  cmake -S jni/dtc -B dtc -DCMAKE_INSTALL_PREFIX=out
+  cmake --build dtc -j$(nproc --all) --target install
+  cmake -S jni/libufdt -B mkdtimg -DCMAKE_INSTALL_PREFIX=out
+  cmake --build mkdtimg -j$(nproc --all) --target install  
   cd $LOCALDIR
 }
 

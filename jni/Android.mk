@@ -5,7 +5,7 @@ LOCAL_PATH := $(call my-dir)
 ################
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := fdt
+LOCAL_MODULE := libfdt
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/dtc/libfdt
 LOCAL_SRC_FILES := \
         dtc/libfdt/fdt.c \
@@ -19,6 +19,24 @@ LOCAL_SRC_FILES := \
         dtc/libfdt/fdt_addresses.c \
         dtc/libfdt/fdt_overlay.c \
         dtc/libfdt/acpi.c
+
+include $(BUILD_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := libufdt_sysdeps
+$(shell cp -f $(LOCAL_PATH)/libufdt/sysdeps/include/libufdt_sysdeps.h $(LOCAL_PATH)/libufdt/libufdt_sysdeps.h)
+LOCAL_C_INCLUDES := \
+     $(LOCAL_PATH)/libufdt/libufdt_sysdeps/include \
+     $(LOCAL_PATH)/libufdt/include \
+     $(LOCAL_PATH)/dtc/libfdt \
+     $(LOCAL_PATH)/libufdt
+
+LOCAL_EXPORT_C_INCLUDES := \
+    $(LOCAL_PATH)/libufdt/libufdt_sysdeps/include
+
+LOCAL_SRC_FILES := \
+    libufdt/sysdeps/libufdt_sysdeps_posix.c
 
 include $(BUILD_STATIC_LIBRARY)
 
@@ -42,6 +60,28 @@ LOCAL_SRC_FILES := \
         dtc/srcpos.c \
         dtc/treesource.c \
         dtc/util.c
+        
+LOCAL_LDFLAGS := -static 
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := mkdtimg_static
+LOCAL_C_INCLUDES := \
+    $(LOCAL_PATH)/libufdt \
+    $(LOCAL_PATH)/libufdt/utils/src \
+    $(LOCAL_PATH)/libufdt/libufdt_sysdeps/include \
+    $(LOCAL_PATH)/libufdt/include \
+    $(LOCAL_PATH)/dtc/libfdt
+    
+LOCAL_STATIC_LIBRARIES := libfdt libufdt_sysdeps
+LOCAL_SRC_FILES := \
+        libufdt/utils/src/mkdtimg.c \
+        libufdt/utils/src/mkdtimg_cfg_create.c \
+        libufdt/utils/src/mkdtimg_core.c \
+        libufdt/utils/src/mkdtimg_create.c \
+        libufdt/utils/src/mkdtimg_dump.c \
+        libufdt/utils/src/dt_table.c
         
 LOCAL_LDFLAGS := -static 
 include $(BUILD_EXECUTABLE)

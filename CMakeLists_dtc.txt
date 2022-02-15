@@ -37,8 +37,6 @@ set(FDT_SRCS
 add_library(fdt STATIC ${FDT_SRCS})
 
 # executable
-set(CMAKE_C_FLAGS -static)
-
 set(SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/checks.c 
     ${CMAKE_CURRENT_SOURCE_DIR}/data.c 
@@ -53,7 +51,9 @@ set(SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/util.c
 )
 add_executable(dtc_static ${SRCS})
-target_link_libraries(dtc_static fdt)
+target_link_libraries(dtc_static fdt -static)
+
+
 
 # install
 install(
