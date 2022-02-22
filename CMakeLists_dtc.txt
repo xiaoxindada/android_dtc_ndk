@@ -12,6 +12,14 @@ add_compile_options(
     -DNO_YAML
 )
 
+# fix lto object
+if(${CMAKE_SYSTEM_NAME} STREQUAL CYGWIN)
+    message("Target is CYGWIN")
+    set(CMAKE_AR "gcc-ar")
+    set(CMAKE_C_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
+    set(CMAKE_C_ARCHIVE_FINISH true)
+endif()
+
 # build_extensions_files
 execute_process(COMMAND flex -o ${CMAKE_CURRENT_SOURCE_DIR}/dtc-lexer.lex.c ${CMAKE_CURRENT_SOURCE_DIR}/dtc-lexer.l)
 execute_process(COMMAND bison -b ${CMAKE_CURRENT_SOURCE_DIR}/dtc-parser -d ${CMAKE_CURRENT_SOURCE_DIR}/dtc-parser.y)
