@@ -85,3 +85,26 @@ LOCAL_SRC_FILES := \
 LOCAL_LDFLAGS := -static 
 include $(BUILD_EXECUTABLE)
 
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := fdtget_static
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/dtc/libfdt
+LOCAL_STATIC_LIBRARIES := libfdt
+LOCAL_SRC_FILES := \
+        dtc/util.c \
+        dtc/fdtget.c
+
+LOCAL_LDFLAGS := -static 
+include $(BUILD_EXECUTABLE)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := fdtput_static
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/dtc/libfdt
+LOCAL_STATIC_LIBRARIES := libfdt
+LOCAL_SRC_FILES := \
+        dtc/util.c \
+        dtc/fdtput.c
+
+LOCAL_LDFLAGS := -static 
+include $(BUILD_EXECUTABLE)

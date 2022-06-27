@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(dtc)
+project(dtc_tools)
 message(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_compile_options(
@@ -39,7 +39,7 @@ set(FDT_SRCS
 )
 add_library(fdt STATIC ${FDT_SRCS})
 
-# executable
+# dtc
 set(SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/checks.c 
     ${CMAKE_CURRENT_SOURCE_DIR}/data.c 
@@ -56,11 +56,25 @@ set(SRCS
 add_executable(dtc_static ${SRCS})
 target_link_libraries(dtc_static fdt -static)
 
+# fdtget
+set(SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/util.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/fdtget.c
+)
+add_executable(fdtget_static ${SRCS})
+target_link_libraries(fdtget_static fdt -static)
 
+# fdtput
+set(SRCS
+    ${CMAKE_CURRENT_SOURCE_DIR}/util.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/fdtput.c
+)
+add_executable(fdtput_static ${SRCS})
+target_link_libraries(fdtput_static fdt -static)
 
 # install
 install(
-    TARGETS dtc_static
+    TARGETS dtc_static fdtget_static fdtput_static
     LIBRARY DESTINATION lib  # 动态库安装路径
     ARCHIVE DESTINATION lib  # 静态库安装路径
     RUNTIME DESTINATION bin  # 可执行文件安装路径

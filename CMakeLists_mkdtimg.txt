@@ -51,7 +51,7 @@ set(UFDT_SYSDEPS_SRCS
 )
 add_library(ufdt_sysdeps STATIC ${UFDT_SYSDEPS_SRCS})
 
-# executable
+# mkdtimg
 set(SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/utils/src/mkdtimg.c 
     ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/utils/src/mkdtimg_cfg_create.c 
