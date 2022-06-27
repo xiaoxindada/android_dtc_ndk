@@ -1,6 +1,0 @@
-[submodule "jni/dtc"]
-	path = jni/dtc
-	url = https://android.googlesource.com/platform/external/dtc
-[submodule "jni/libufdt"]
-	path = jni/libufdt
-	url = https://android.googlesource.com/platform/system/libufdt

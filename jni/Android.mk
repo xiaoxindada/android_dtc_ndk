@@ -25,7 +25,6 @@ include $(BUILD_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := libufdt_sysdeps
-$(shell cp -f $(LOCAL_PATH)/libufdt/sysdeps/include/libufdt_sysdeps.h $(LOCAL_PATH)/libufdt/libufdt_sysdeps.h)
 LOCAL_C_INCLUDES := \
      $(LOCAL_PATH)/libufdt/libufdt_sysdeps/include \
      $(LOCAL_PATH)/libufdt/include \

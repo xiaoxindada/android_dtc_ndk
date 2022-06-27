@@ -20,9 +20,6 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL CYGWIN)
     set(CMAKE_C_ARCHIVE_FINISH true)
 endif()
 
-# add missing header files
-execute_process(COMMAND cp -f ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/sysdeps/include/libufdt_sysdeps.h ${CMAKE_CURRENT_SOURCE_DIR}/../libufdt/libufdt_sysdeps.h)
-
 # include_dirs
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../dtc/libfdt

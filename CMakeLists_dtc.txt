@@ -20,11 +20,6 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL CYGWIN)
     set(CMAKE_C_ARCHIVE_FINISH true)
 endif()
 
-# build_extensions_files
-execute_process(COMMAND flex -o ${CMAKE_CURRENT_SOURCE_DIR}/dtc-lexer.lex.c ${CMAKE_CURRENT_SOURCE_DIR}/dtc-lexer.l)
-execute_process(COMMAND bison -b ${CMAKE_CURRENT_SOURCE_DIR}/dtc-parser -d ${CMAKE_CURRENT_SOURCE_DIR}/dtc-parser.y)
-execute_process(COMMAND cp -f ${CMAKE_CURRENT_SOURCE_DIR}/dtc-parser.tab.h ${CMAKE_CURRENT_SOURCE_DIR}/dtc-parser.h)
-
 # include_dirs
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libfdt)
 

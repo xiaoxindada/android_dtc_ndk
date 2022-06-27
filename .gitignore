@@ -7,3 +7,5 @@
 /mkdtimg
 /out
 *zip
+jni/dtc/CMakeLists.txt
+jni/libufdt/CMakeLists.txt
